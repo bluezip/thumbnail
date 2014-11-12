@@ -8,6 +8,7 @@ Create thumbnail
 ### Example ###
 
 ~~~javascript
+  var Thumbnail     = require('bluezip-thumbnail');
   var data, thumbnail;
 
   data = {
