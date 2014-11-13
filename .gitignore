@@ -2,3 +2,4 @@ node_modules
 app
 .idea
 .DS_Store
+asserts/destination
