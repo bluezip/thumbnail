@@ -13,6 +13,7 @@ class thumbnail
     source : null
     destination: null
     unlink: true
+    deleteSource: false
     thumbnails: [ ]
 
 
@@ -61,11 +62,20 @@ class thumbnail
             if row.resize == true
               _path   = path.join data.destination, row.name
 
-              gm(data.source)
-              .resize(row.width)
-              .autoOrient()
-              .write _path, (err)->
-                if err then cb2 err else cb2 null
+
+              if row.thumbnail == true
+
+                gm(data.source)
+                .thumb row.width, row.height, _path, 95, (err)->
+                  cb(err) if err
+                  cb(null)
+              else
+
+                gm(data.source)
+                .resize(row.width, row.height, "!")
+                .autoOrient()
+                .write _path, (err)->
+                  if err then cb2 err else cb2 null
 
           ,(err)->
             if err then cb(err)

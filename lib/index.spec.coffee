@@ -6,6 +6,7 @@ path          = require 'path'
 fs            = require 'fs'
 async         = require 'async'
 glob          = require 'glob'
+gm            = require 'gm'
 
 describe 'Thumbnail', ->
 
@@ -24,7 +25,7 @@ describe 'Thumbnail', ->
           done()
 
 
-  it 'should it ok', ->
+  it 'should it work', ->
     true.should.be.a.true;
     false.should.not.be.true
 
@@ -78,12 +79,12 @@ describe 'Thumbnail', ->
 
 
 
-  it 'resize image automatic should be work', (done)->
+  it 'resize image with width = 150px should be work', (done)->
     data  =
       source : path.join 'asserts', 'source',  'home_image.jpg'
       destination: path.join 'asserts', 'destination'
       thumbnails: [
-        {name: 'xxxx2.jpeg', resize: true, width: 150}
+        {name: 'width.jpeg', resize: true, width: 150, thumbnail: false}
       ]
 
 
@@ -93,8 +94,56 @@ describe 'Thumbnail', ->
       should.not.exist err
       _path_image   = path.join data.destination, data.thumbnails[0].name
       (fs.existsSync _path_image).should.be.true
+      gm(_path_image).size (err,value)->
+        should.not.exist err
+        value.should.be.instanceOf(Object)
+        value.width.should.be.match /150px/i
+        done()
 
-      done()
+  it 'resize image with height = 150px should be ok', (done)->
+    data  =
+      source : path.join 'asserts', 'source',  'home_image.jpg'
+      destination: path.join 'asserts', 'destination'
+      thumbnails: [
+        {name: 'height.jpeg', resize: true, height: 150, thumbnail: false}
+      ]
+
+
+    thumbnail   = new Thumbnail data
+
+    thumbnail.run (err)->
+      should.not.exist err
+      _path_image   = path.join data.destination, data.thumbnails[0].name
+      (fs.existsSync _path_image).should.be.true
+      gm(_path_image).size (err,value)->
+        should.not.exist err
+        value.should.be.instanceOf(Object)
+        value.height.should.be.match /150px/i
+        done()
+
+  it 'resize image to thumbnail should be ok', (done)->
+    data  =
+      source : path.join 'asserts', 'source',  'home_image.jpg'
+      destination: path.join 'asserts', 'destination'
+      thumbnails: [
+        {name: 'height.jpeg', resize: true, height: 150, width: 150, thumbnail: true}
+      ]
+
+
+    thumbnail   = new Thumbnail data
+
+    thumbnail.run (err)->
+      should.not.exist err
+      _path_image   = path.join data.destination, data.thumbnails[0].name
+      (fs.existsSync _path_image).should.be.true
+      gm(_path_image).size (err,value)->
+        should.not.exist err
+        value.should.be.instanceOf(Object)
+        value.height.should.be.match /150px/i
+        value.width.should.be.match /150px/i
+        done()
+
+
 
 
   it 'unlink source should be remove', (done)->
@@ -104,11 +153,12 @@ describe 'Thumbnail', ->
       destination: path.join 'asserts', 'destination'
       deleteSource: true
       thumbnails: [
-        {name: 'xxxx2.jpeg', resize: true, width: 150}
+        {name: 'unlink.jpeg', resize: true, width: 150, height: 100}
       ]
 
 
     async.waterfall [
+
       (cb)->
         _path   = path.join 'asserts', 'source', 'unlink_image.jpg'
         fs.readFile data.source, (err,data) ->
@@ -134,5 +184,31 @@ describe 'Thumbnail', ->
 
 
 
+  it 'resize thumbnail multi params should be ok', (done)->
+
+    data  =
+      source : path.join 'asserts', 'source',  'home_image.jpg'
+      destination: path.join 'asserts', 'destination'
+      deleteSource: false
+      thumbnails: [
+        { name: 'height.jpg', resize: true, height: 150 ,thumbnail: false},
+        { name: 'origin.jpg', resize: false},
+        { name: 'thumbnail.jpg', resize: true, height: 150, width: 150, thumbnail: true},
+      ]
 
 
+    thumbnail   = new Thumbnail data
+
+    thumbnail.run (err)->
+
+      should.not.exist err
+
+      async.concatSeries data.thumbnails
+
+        ,(row, cb)->
+          _path_image   = path.join data.destination, row.name
+          (fs.existsSync(_path_image)).should.be.true
+          cb(null);
+
+        , ->
+         done()

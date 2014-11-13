@@ -28,3 +28,8 @@ Create thumbnail
     console.log(err);
   });
 ~~~
+
+#### 0.1.0 ####
+
+1. Resize image with thumbnail 
+2. Resize image with auto width or height

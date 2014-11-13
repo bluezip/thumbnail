@@ -20,6 +20,7 @@
       source: null,
       destination: null,
       unlink: true,
+      deleteSource: false,
       thumbnails: []
     };
 
@@ -61,13 +62,22 @@
             }
             if (row.resize === true) {
               _path = path.join(data.destination, row.name);
-              return gm(data.source).resize(row.width).autoOrient().write(_path, function(err) {
-                if (err) {
-                  return cb2(err);
-                } else {
-                  return cb2(null);
-                }
-              });
+              if (row.thumbnail === true) {
+                return gm(data.source).thumb(row.width, row.height, _path, 95, function(err) {
+                  if (err) {
+                    cb(err);
+                  }
+                  return cb(null);
+                });
+              } else {
+                return gm(data.source).resize(row.width, row.height, "!").autoOrient().write(_path, function(err) {
+                  if (err) {
+                    return cb2(err);
+                  } else {
+                    return cb2(null);
+                  }
+                });
+              }
             }
           }, function(err) {
             if (err) {
