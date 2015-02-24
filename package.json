@@ -6,7 +6,7 @@
   "scripts": {
     "watch-test": "./node_modules/.bin/mocha --watch app/**/*.spec.js",
     "test": "./node_modules/.bin/mocha app/**/*.spec.js",
-    "postinstall": "npm run complide-coffee && npm run test",
+    "postinstall": "npm run complide-coffee",
     "watch": "npm run watch-coffee & npm run watch-test",
     "complide-coffee": "./node_modules/.bin/coffee -o ./app/ -c ./lib/",
     "watch-coffee": "./node_modules/.bin/nodemon --watch *.coffee --ext coffee --exec 'npm run build-coffee'"
