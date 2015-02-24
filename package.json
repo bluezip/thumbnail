@@ -6,9 +6,9 @@
   "scripts": {
     "watch-test": "./node_modules/.bin/mocha --watch app/**/*.spec.js",
     "test": "./node_modules/.bin/mocha app/**/*.spec.js",
-    "postinstall": "npm run build-coffee",
+    "postinstall": "npm run test",
     "watch": "npm run watch-coffee & npm run watch-test",
-    "build-coffee": "./node_modules/.bin/coffee -o ./app/ -c ./lib/",
+    "preinstall": "./node_modules/.bin/coffee -o ./app/ -c ./lib/",
     "watch-coffee": "./node_modules/.bin/nodemon --watch *.coffee --ext coffee --exec 'npm run build-coffee'"
   },
   "keywords": [
@@ -17,13 +17,13 @@
   "author": "bluezip",
   "license": "ISC",
   "devDependencies": {
-    "coffee-script": "^1.8.0",
     "glob": "^4.0.6",
-    "mocha": "^2.0.1",
     "nodemon": "^1.2.1",
     "should": "^4.3.0"
   },
   "dependencies": {
+    "mocha": "^2.0.1",
+    "coffee-script": "^1.8.0",
     "async": "^0.9.0",
     "gm": "^1.17.0",
     "lodash": "^2.4.1"
