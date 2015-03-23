@@ -9,7 +9,7 @@
     "install": "npm run complide-coffee",
     "watch": "npm run watch-coffee & npm run watch-test",
     "complide-coffee": "./node_modules/.bin/coffee -o ./app/ -c ./lib/",
-    "watch-coffee": "./node_modules/.bin/nodemon --watch *.coffee --ext coffee --exec 'npm run build-coffee'"
+    "watch-coffee": "./node_modules/.bin/nodemon --watch *.coffee --ext coffee --exec 'npm run complide-coffee"
   },
   "keywords": [
     "thumbnail"

@@ -47,7 +47,7 @@ class thumbnail
 
       (cb) ->
 
-        async.concat data.thumbnails,
+        async.concatSeries data.thumbnails,
 
           (row,cb2)->
 
