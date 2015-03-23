@@ -43,7 +43,7 @@ class thumbnail
           cb new Error 'Not have folder for destination'
 
       (cb) ->
-        async.concatSeries data.thumbnails,
+        async.concat data.thumbnails,
           (row,cb2)->
             if row.resize == false
               _path   = path.join data.destination, row.name
