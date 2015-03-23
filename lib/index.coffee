@@ -43,7 +43,7 @@ class thumbnail
           cb new Error 'Not have folder for destination'
 
       (cb) ->
-        async.concat data.thumbnails,
+        async.each data.thumbnails,
           (row,cb2)->
             if row.resize == false
               _path   = path.join data.destination, row.name
@@ -55,15 +55,12 @@ class thumbnail
             if row.resize == true
               _path   = path.join data.destination, row.name
 
-
               if row.thumbnail == true
-
                 gm(data.source)
                 .thumb row.width, row.height, _path, 95, (err)->
                   cb(err) if err
                   cb(null)
               else
-
                 gm(data.source)
                 .resize(row.width, row.height, "!")
                 .autoOrient()
@@ -76,10 +73,10 @@ class thumbnail
       # unlink source
       (cb) ->
         if data.deleteSource   == true
-
-          fs.unlink(data.source,cb);
-
-        else cb null
+          fs.unlink data.source,(err)->
+            if(err) then return cb(err)
+            return cb null
+        else return cb null
 
     ], (err)->
       if err then callback err
