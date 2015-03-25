@@ -43,7 +43,7 @@ class thumbnail
           cb new Error 'Not have folder for destination'
 
       (cb) ->
-        async.each data.thumbnails,
+        async.eachSeries data.thumbnails,
           (row,cb2)->
             if row.resize == false
               _path   = path.join data.destination, row.name
@@ -67,8 +67,8 @@ class thumbnail
                 .write _path, (err)->
                   if err then cb2 err else cb2 null
           ,(err)->
-            if err then cb(err)
-            else cb(null)
+            if err then return cb(err)
+            return  cb(null)
 
       # unlink source
       (cb) ->
