@@ -73,10 +73,8 @@ class thumbnail
       # unlink source
       (cb) ->
         if data.deleteSource   == true
-          fs.unlink data.source,(err)->
-            if(err) then return cb(err)
-            return cb null
-        else return cb null
+          fs.unlinkSync(data.source);
+        cb null
 
     ], (err)->
       if err then callback err
