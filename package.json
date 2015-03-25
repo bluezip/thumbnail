@@ -1,6 +1,6 @@
 {
   "name": "bluezip-thumbnail",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "create thubnail",
   "main": "app/index.js",
   "scripts": {
