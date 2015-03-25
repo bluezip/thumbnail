@@ -73,7 +73,7 @@ class thumbnail
       # unlink source
       (cb) ->
         if data.deleteSource   == true
-          fs.unlinkSync(data.source);
+          fs.unlinkSync(data.source)
         cb null
 
     ], (err)->
