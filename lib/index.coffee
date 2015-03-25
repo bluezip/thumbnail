@@ -58,8 +58,8 @@ class thumbnail
               if row.thumbnail == true
                 gm(data.source)
                 .thumb row.width, row.height, _path, 95, (err)->
-                  cb(err) if err
-                  cb(null)
+                  cb2(err) if err
+                  cb2(null)
               else
                 gm(data.source)
                 .resize(row.width, row.height, "!")
